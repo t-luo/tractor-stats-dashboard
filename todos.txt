@@ -1,0 +1,7 @@
+1. find a way to avoid making the google sheet viewiable by link. instead, request authentication at the start of the script.
+2. optimization of calculations
+3. / caching?
+4. type hints need to follow python3.11 standards
+5. formatting
+6. ruff
+
