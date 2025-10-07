@@ -163,7 +163,7 @@ def create_colored_table(df: pd.DataFrame, metric: str, all_player_stats: Option
         html_content += '</tr>'
     
     html_content += '</table></div>'
-    ui.html(html_content)
+    ui.html(html_content, sanitize=False)
 
 def create_colored_teammate_opponent_table(data: List[Dict[str, Any]], title: str, subtitle: str) -> None:
     """Create a colored table for teammate/opponent rankings"""
@@ -235,7 +235,7 @@ def create_colored_teammate_opponent_table(data: List[Dict[str, Any]], title: st
         html_content += '</tr>'
     
     html_content += '</table></div>'
-    ui.html(html_content)
+    ui.html(html_content, sanitize=False)
 
 def create_global_stats(df_2decks: pd.DataFrame, df_3decks: pd.DataFrame) -> None:
     """Create the global statistics section"""
