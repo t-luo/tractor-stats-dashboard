@@ -10,9 +10,9 @@ def main_page() -> None:
         ui.open("/")
 
     # Header with title and refresh button
-    with ui.row().classes("w-full items-center justify-between mb-4"):
-        ui.label("🎴 Tractor Stats Dashboard").classes("text-h3")
-        with ui.row().classes("items-center gap-2"):
+    with ui.row().classes("w-full flex-col sm:flex-row items-center justify-between mb-4 gap-2"):
+        ui.label("🎴 Tractor Stats Dashboard").classes("text-h3 text-center sm:text-left whitespace-nowrap")
+        with ui.row().classes("items-center gap-2 flex-wrap justify-center"):
             cache_age = get_cache_age()
             if cache_age:
                 ui.label(f"Last updated: {cache_age}").classes("text-sm text-gray-600")

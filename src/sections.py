@@ -248,8 +248,8 @@ def create_global_stats(df_2decks: pd.DataFrame, df_3decks: pd.DataFrame) -> Non
     
     with ui.card():
         ui.label("🌍 Global Statistics").classes('text-h5')
-        with ui.row().classes("gap-4 flex-wrap"):
-            with ui.card().classes("flex-1 p-4 min-w-0"):
+        with ui.column().classes("gap-4 w-full sm:flex-row sm:flex"):
+            with ui.card().classes("flex-1 p-4"):
                 ui.label("2-Deck Games").classes('text-h6')
                 ui.label(f"Total games: {len(df_2decks)}").classes('font-bold')
                 ui.label(f"Average points collected: {average_points_2decks:.2f}").classes('font-bold')
@@ -276,7 +276,7 @@ def create_global_stats(df_2decks: pd.DataFrame, df_3decks: pd.DataFrame) -> Non
                 )
                 ui.plotly(fig_2deck)
                 
-            with ui.card().classes("flex-1 p-4 min-w-0"):
+            with ui.card().classes("flex-1 p-4"):
                 ui.label("3-Deck Games").classes('text-h6')
                 ui.label(f"Total games: {len(df_3decks)}").classes('font-bold')
                 ui.label(f"Average points collected: {average_points_3decks:.2f}").classes('font-bold')
@@ -311,18 +311,18 @@ def create_rankings(lb2: Dict[str, pd.DataFrame], lb3: Dict[str, pd.DataFrame], 
     with ui.card():
         ui.label("2 Decks").classes("text-h5")
         ui.label(f"* n>={MIN_SAMPLE_SIZE} is required")
-        with ui.row().classes("flex-nowrap gap-2"):
+        with ui.row().classes("flex-wrap gap-2"):
             for metric, table in lb2.items():
-                with ui.card().classes("p-2 flex-1"):
+                with ui.card().classes("p-2 flex-1 min-w-[250px]"):
                     ui.label(metric).classes("font-bold").style("font-size: 18px;")
                     create_colored_table(table, metric, lb2_all_stats)
 
     with ui.card():
         ui.label("3 Decks").classes("text-h5")
         ui.label(f"* n>={MIN_SAMPLE_SIZE} is required")
-        with ui.row().classes("flex-nowrap gap-2"):
+        with ui.row().classes("flex-wrap gap-2"):
             for metric, table in lb3.items():
-                with ui.card().classes("p-2 flex-1"):
+                with ui.card().classes("p-2 flex-1 min-w-[250px]"):
                     ui.label(metric).classes("font-bold").style("font-size: 18px;")
                     create_colored_table(table, metric, lb3_all_stats)
 
