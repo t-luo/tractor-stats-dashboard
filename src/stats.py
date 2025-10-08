@@ -8,7 +8,7 @@ from .constants import ATTACKING_PLAYER_COLS, DEFENDING_PLAYER_COLS, ALL_PLAYER_
 _cache = {
     'data': None,
     'timestamp': None,
-    'cache_duration': timedelta(minutes=5)
+    'cache_duration': timedelta(days=1)
 }
 
 def get_level_change_value(result: Any) -> int:
