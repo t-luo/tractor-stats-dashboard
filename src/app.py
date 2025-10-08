@@ -1,10 +1,19 @@
 from nicegui import ui
 from typing import Dict, List, Union
 from .sections import create_global_stats, create_rankings, create_player_lookup
-from .stats import load_data, calculate_player_stats, leaderboard_tables, get_unique_players
+from .stats import load_data, calculate_player_stats, leaderboard_tables, get_unique_players, clear_cache
 
 @ui.page("/")
 def main_page() -> None:
+    def refresh_data():
+        clear_cache()
+        ui.open("/")
+
+    # Header with title and refresh button
+    with ui.row().classes("w-full items-center justify-between mb-4"):
+        ui.label("🎴 Tractor Stats Dashboard").classes("text-h3")
+        ui.button("🔄 Refresh Data", on_click=refresh_data).classes("bg-blue-500")
+
     df = load_data()
     if "Error" in df.columns:
         ui.label("⚠️ Could not load data. Check Google Sheets link.")

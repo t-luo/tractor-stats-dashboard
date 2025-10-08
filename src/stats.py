@@ -1,7 +1,15 @@
 import pandas as pd
 from typing import Dict, List, Tuple, Any, Union, Optional
+from datetime import datetime, timedelta
 
 from .constants import ATTACKING_PLAYER_COLS, DEFENDING_PLAYER_COLS, ALL_PLAYER_COLS, DEALER_COL, MIN_SAMPLE_SIZE
+
+# Cache for data
+_cache = {
+    'data': None,
+    'timestamp': None,
+    'cache_duration': timedelta(minutes=5)
+}
 
 def get_level_change_value(result: Any) -> int:
     """Convert game result to level change value"""
@@ -25,13 +33,36 @@ def get_level_change_value(result: Any) -> int:
     else:
         return 0
 
-def load_data() -> pd.DataFrame:
+def load_data(force_refresh: bool = False) -> pd.DataFrame:
+    """Load data from Google Sheets with caching
+
+    Args:
+        force_refresh: If True, bypass cache and force a fresh load
+    """
     URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTKJVlAjGE_TRXpBGIvUR-po05xTuBCV2chd5B76hdvVItNpP1qMNgfLCVMBwj5gCsvjhDS9A87Kgoi/pub?gid=0&single=true&output=csv"
+
+    # Check if cache is valid
+    if not force_refresh and _cache['data'] is not None and _cache['timestamp'] is not None:
+        time_since_cache = datetime.now() - _cache['timestamp']
+        if time_since_cache < _cache['cache_duration']:
+            return _cache['data']
+
+    # Cache is invalid or force refresh - fetch new data
     try:
         df = pd.read_csv(URL)
+        _cache['data'] = df
+        _cache['timestamp'] = datetime.now()
         return df
     except Exception as e:
+        # If fetch fails but we have cached data, return it
+        if _cache['data'] is not None:
+            return _cache['data']
         return pd.DataFrame({"Error": [str(e)]})
+
+def clear_cache() -> None:
+    """Clear the data cache to force a fresh load on next request"""
+    _cache['data'] = None
+    _cache['timestamp'] = None
 
 def calculate_player_stats(player_name: str, df: pd.DataFrame) -> Dict[str, Union[float, int]]:
     defending_other_columns = DEFENDING_PLAYER_COLS[1:]  # D2, D3, D4 (not dealer)
