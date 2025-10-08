@@ -64,6 +64,27 @@ def clear_cache() -> None:
     _cache['data'] = None
     _cache['timestamp'] = None
 
+def get_cache_age() -> Optional[str]:
+    """Get a human-readable string of how long ago the cache was updated
+
+    Returns:
+        A string like "2 minutes ago" or "1 hour ago", or None if no cache
+    """
+    if _cache['timestamp'] is None:
+        return None
+
+    time_diff = datetime.now() - _cache['timestamp']
+    total_seconds = int(time_diff.total_seconds())
+
+    if total_seconds < 60:
+        return "Just now"
+    elif total_seconds < 3600:
+        minutes = total_seconds // 60
+        return f"{minutes} minute{'s' if minutes != 1 else ''} ago"
+    else:
+        hours = total_seconds // 3600
+        return f"{hours} hour{'s' if hours != 1 else ''} ago"
+
 def calculate_player_stats(player_name: str, df: pd.DataFrame) -> Dict[str, Union[float, int]]:
     defending_other_columns = DEFENDING_PLAYER_COLS[1:]  # D2, D3, D4 (not dealer)
 
